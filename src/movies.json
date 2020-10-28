@@ -1,0 +1,30 @@
+[
+  {
+    "id": "527f81e3-0b2f-4623-bc22-2be0818b8c42",
+    "title": "Однажды в Голливуде",
+    "image": "https://www.film.ru/sites/default/files/movies/posters/33906726-1115556.jpg",
+    "description": " Телевизионный актёр, который занимается поисками возможности пробиться в кинобизнес. История разворачивается на фоне событий, связанных с сектой Чарльза Мэнсона.",
+    "rating": "IMDb: 7.60"
+  },
+  {
+    "id": "b0abb528-fa68-4bb6-a4f9-f8ac59b09d71",
+    "title": "Омерзительная восьмёрка",
+    "image": "https://www.film.ru/sites/default/files/movies/posters/H8_Chars_71x101_Samuel.jpg",
+    "description": "Охотник за головами Джон Рут конвоирует по Америке преступницу Дэйзи — для передачи правосудию. К ним присоединяется другой охотник...",
+    "rating": "IMDb: 7.80"
+  },
+  {
+    "id": "f995237f-9255-41c7-8b6c-275411243ad0",
+    "title": "Джекки Браун",
+    "image": "https://www.film.ru/sites/default/files/movies/posters/Jackie-Brown-11.jpg",
+    "description": "44-летняя стюардесса Джекки Браун подрабатывает, перевозя из Мексики в США и обратно круглые суммы наличных денег для торговца оружием Орделла Робби.",
+    "rating": "IMDb:  7.50"
+  },
+  {
+    "id": "25fbfa66-0461-468e-b630-07f25fd05680",
+    "title": "Револьвер",
+    "image": "https://www.film.ru/sites/default/files/movies/posters/Revolver-9.jpg",
+    "description": "Остросюжетный гангстерский боевик о разборках двух конкурирующих мафиозных группировок Лас-Вегаса.",
+    "rating": "IMDb:  7.40"
+  }
+]

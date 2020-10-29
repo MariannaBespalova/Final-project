@@ -30,6 +30,7 @@ class RenderCard {
     const editButtons = document.querySelectorAll(".btn-edit");
     const deleteButtons = document.querySelectorAll(".btn-delete");
     const moreInfoLinks = document.querySelectorAll(".more");
+    const filmId = document.querySelectorAll(".card")
 
     editButtons.forEach(button => {
       if (!button.dataset.clicked) {
@@ -41,10 +42,13 @@ class RenderCard {
       }
     })
 
-    deleteButtons.forEach(button => {
+    deleteButtons.forEach((button, index) => {
       if (!button.dataset.clicked) {
-        button.addEventListener("click", () => {
-          console.log("Delete button")
+        button.addEventListener("click", (event) => {
+        let confirmDelete = confirm("Вы точно хотите удалить фильм?");
+        if (confirmDelete === true)
+          filmId[index].innerHTML ="";
+          console.log(event)
         })
         button.dataset.clicked = "true";
       }

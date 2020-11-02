@@ -1,24 +1,60 @@
-import 'jquery';
-import 'popper.js';
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import "./style.css"
-import movies from "./movies.json"
+import "jquery";
+import "popper.js";
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./style.css";
+import { getHistory } from "./app-history";
+import movies from "./movies.json";
 
 import CreateHeader from "./header/header";
 import CreateMain from "./main/main";
 import RenderCard from "./film-card/card";
-import CreateFooter from './footer/footer';
+import CreateFooter from "./footer/footer";
+import Greeting from "./greeting/greeting";
+
+const container = document.querySelector(".container");
 
 const header = new CreateHeader();
-header.render();
+container.appendChild(header.render());
 
 const main = new CreateMain();
-main.render();
+container.appendChild(main.render());
 
-const movie = movies.map(movie => new RenderCard(movie))
-movie.forEach(card => card.render());
-
+const mainWrapper = document.querySelector("#content");
+const greeting = new Greeting();
+mainWrapper.appendChild(greeting.render())
 
 const footer = new CreateFooter();
-footer.render();
+container.appendChild(footer.render());
+
+const history = getHistory();
+
+function renderRoute(path) {
+  switch (path) {
+    case "/":
+      mainWrapper.innerHTML = "";
+      mainWrapper.appendChild(greeting.render());
+      break;
+    case "/list":
+      mainWrapper.innerHTML = "";
+      const movie = movies.map(movie => new RenderCard(movie))
+      movie.forEach(card => card.render());
+      break;
+    default:
+      mainWrapper.innerText = "404";
+      break;
+  }
+}
+
+history.listen(listener => {
+  renderRoute(listener.location.pathname);
+});
+
+renderRoute(history.location.pathname);
+
+// if (history.location.pathname === "/") {
+//   history.replace("/list");
+// } else {
+//   renderRoute(history.location.pathname);
+// }
+

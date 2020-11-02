@@ -11,7 +11,7 @@ class CreateMain {
     const container = document.createElement("div");
     container.innerHTML = html;
 
-    document.body.firstElementChild.appendChild(container.firstChild);
+    return container.firstChild;
   }
 }
 

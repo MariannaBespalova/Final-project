@@ -1,4 +1,5 @@
 import "jquery";
+import $ from "jquery"
 import html from "./card.html";
 import template from "lodash.template";
 import { getHistory } from "../app-history";
@@ -15,6 +16,11 @@ class RenderCard {
     this.description = props.description || "";
     this.rating = props.rating || "";
     this.origin = props.origin || "";
+    this.year = props.year || "";
+    this.country = props.country || "";
+    this.tagline = props.tagline || "";
+    this.producer = props.producer || "";
+    this.actors = props.actors || "";
   }
 
   render() {
@@ -24,7 +30,12 @@ class RenderCard {
       title: this.title,
       description: this.description,
       rating: this.rating,
-      origin: this.origin
+      origin: this.origin,
+      year: this.year,
+      country: this.country,
+      tagline: this.tagline,
+      producer: this.producer,
+      actors: this.actors
     })
 
     const main = document.querySelector("main");
@@ -43,14 +54,27 @@ class RenderCard {
 
     editButtons.forEach(button => {
       if (!button.dataset.clicked) {
-        button.addEventListener('click', (event) => {
-          console.log(event.target.value)
+        button.addEventListener('click', () => {
           movieContainer.appendChild(edit.render());
+          $("#modal").modal("show");
           const title = document.querySelector("#title");
           const origin = document.querySelector("#origin_title");
+          const year = document.querySelector("#year");
+          const country = document.querySelector("#country");
+          const tagline = document.querySelector("#tagline");
+          const producer = document.querySelector("#producer");
+          const actors = document.querySelector("#actors");
+          const rating = document.querySelector("#rating");
+          const description = document.querySelector("#description");
           title.value = this.title;
           origin.value = this.origin;
-
+          year.value = this.year;
+          country.value = this.country;
+          tagline.value = this.tagline;
+          producer.value = this.producer;
+          actors.value = this.actors;
+          rating.value = this.rating;
+          description.value = this.description;
         })
         button.dataset.clicked = true;
       }

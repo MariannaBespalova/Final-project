@@ -1,5 +1,5 @@
 import html from "./edit.html";
-import $ from "jquery"
+
 import { renderTemplate } from "../template-utils";
 
 
@@ -9,7 +9,7 @@ class EditMovie {
   }
 
   render() {
-    $("#modal").modal("show")
+  
     return this.edit;
   }
 }

@@ -42,7 +42,7 @@ function renderRoute(path) {
   //   movie.forEach(card => card.render());
   // } else if (path.length > 6) {
   //   const id = path.slice(6);
-  //   showMoviePage(id);
+  //   
   // }
   switch (path) {
     case "/":

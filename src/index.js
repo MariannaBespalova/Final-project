@@ -56,6 +56,8 @@ function renderRoute(path) {
       break;
     case "/list-527f81e3-0b2f-4623-bc22-2be0818b8c42":
       mainWrapper.innerHTML = "";
+      const detailedMov = movies.find(movie => movie.id === "527f81e3-0b2f-4623-bc22-2be0818b8c42")
+      
 
       break;
     default:

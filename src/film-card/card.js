@@ -84,7 +84,8 @@ class RenderCard {
         button.addEventListener("click", (event) => {
           event.preventDefault();
 
-          const detailedMovie = new CreateMovie(this.movie);
+     
+          const detailedMovie =  new CreateMovie(this.movie);
           movieContainer.firstElementChild.appendChild(detailedMovie.render());
 
 

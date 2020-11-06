@@ -21,25 +21,12 @@ class RenderCard {
     this.tagline = movie.tagline || "";
     this.producer = movie.producer || "";
     this.actors = movie.actors || "";
-    this.movie = renderTemplate(html, {
-      id: this.id,
-      image: this.image,
-      title: this.title,
-      text: this.text,
-      description: this.description,
-      rating: this.rating,
-      origin: this.origin,
-      year: this.year,
-      country: this.country,
-      tagline: this.tagline,
-      producer: this.producer,
-      actors: this.actors
-    })
+    this.card = renderTemplate(html, {...movie})
   }
 
   onEditClick() {
     const editButtons = document.querySelectorAll(".btn-edit");
-    const edit = new EditMovie(this.movie);
+    const edit = new EditMovie(this.card);
     const movieContainer = document.querySelector(".container");
     editButtons.forEach(button => {
       if (!button.dataset.clicked) {
@@ -84,8 +71,8 @@ class RenderCard {
         button.addEventListener("click", (event) => {
           event.preventDefault();
 
-     
-          const detailedMovie =  new CreateMovie(this.movie);
+
+          const detailedMovie = new CreateMovie(this.card);
           movieContainer.firstElementChild.appendChild(detailedMovie.render());
 
 
@@ -99,7 +86,7 @@ class RenderCard {
 
   render() {
     const main = document.querySelector("main");
-    main.appendChild(this.movie);
+    main.appendChild(this.card);
 
     this.onEditClick();
     this.onDeleteClick();

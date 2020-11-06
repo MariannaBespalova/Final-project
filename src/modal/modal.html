@@ -27,7 +27,7 @@
               <label class="custom-file-label" for="upload-poster">Выберите файл</label>
             </div>
           </div>
-          <fieldset class="form-group">
+          <fieldset class="form-group" id="add-field">
             <legend class="col-form-label pt-0">Детальная информация:</legend>
             <div class="form-group row">
               <label class="col-sm-2 col-form-label">Год:</label>
@@ -53,8 +53,9 @@
                 <input id="producer" type="text" class="form-control">
               </div>
               <div class="col-sm-2">
-                <button class="btn btn-primary btn-add-field" type="button"><svg class="octicon octicon-plus"
-                    viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
+                <button id="btn-add-field" class="btn btn-primary btn-add-field" type="button"><svg
+                    class="octicon octicon-plus" viewBox="0 0 12 16" version="1.1" width="12" height="16"
+                    aria-hidden="true">
                     <path fill-rule="evenodd" d="M12 9H7v5H5V9H0V7h5V2h2v5h5v2z"></path>
                   </svg></button>
               </div>
@@ -87,7 +88,7 @@
           </div>
           <div class="form-group">
             <label>Описание:</label>
-            <textarea id= "description" class="form-control" rows="3"></textarea>
+            <textarea id="description" class="form-control" rows="3"></textarea>
           </div>
         </form>
       </div>

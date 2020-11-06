@@ -1,7 +1,10 @@
-
 import html from "./header.html";
+import $ from "jquery";
 import { renderTemplate } from "../template-utils";
 import { getHistory } from "../app-history";
+import EditMovie from "../modal/modal";
+const edit = new EditMovie();
+const movieContainer = document.querySelector(".container");
 
 const history = getHistory();
 class CreateHeader {
@@ -13,6 +16,10 @@ class CreateHeader {
     if (event.target.tagName === "a") {
       event.preventDefault();
       history.push(event.target.href);
+    } else if (event.target.id === "add-new") {
+      event.preventDefault();
+      edit.render();
+      $("#modal").modal("show");
     }
   }
 
@@ -23,30 +30,3 @@ class CreateHeader {
 }
 
 export default CreateHeader;
-
-
-// class CreateHeader {
-//   constructor() {
-//     this.header
-//   }
-  // onClick (event) {
-  //   if (event.target.tagName === "a") {
-  //     event.preventDefault();
-  //     history.push(event.target.href);
-  //     console.log(event.target.href)
-  //   }
-  // }
-
-//   render() {
-//     this.header = html;
-//     // this.header.addEventListener("click", this.onClick.bind(this));
-//     const container = document.createElement("div");
-//     container.innerHTML = html;
-
-
-//     return container.firstChild;
-
-//   }
-// }
-
-// export default CreateHeader

@@ -5,6 +5,7 @@ class CreateFooter {
   constructor() {
     this.footer
   }
+
   render() {
     this.footer = html;
 

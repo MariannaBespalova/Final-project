@@ -10,6 +10,7 @@ const history = getHistory();
 
 class RenderCard {
   constructor(movie) {
+    this.movie = movie;
     this.id = movie.id || "";
     this.image = movie.image || "";
     this.title = movie.title || "";
@@ -21,7 +22,7 @@ class RenderCard {
     this.tagline = movie.tagline || "";
     this.producer = movie.producer || "";
     this.actors = movie.actors || "";
-    this.card = renderTemplate(html, {...movie})
+    this.card = renderTemplate(html, { ...movie })
   }
 
   onEditClick() {
@@ -72,7 +73,8 @@ class RenderCard {
           event.preventDefault();
 
 
-          const detailedMovie = new CreateMovie(this.card);
+          const detailedMovie = new CreateMovie(this.movie);
+          console.log(this.movie);
           movieContainer.firstElementChild.appendChild(detailedMovie.render());
 
 

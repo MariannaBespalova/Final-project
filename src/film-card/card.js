@@ -65,21 +65,12 @@ class RenderCard {
   }
 
   onMoreInfoClick() {
-    const movieContainer = document.querySelector(".container");
     const moreInfoLinks = document.querySelectorAll(".more");
     moreInfoLinks.forEach(button => {
       if (!button.dataset.clicked) {
         button.addEventListener("click", (event) => {
           event.preventDefault();
-
-
-          const detailedMovie = new CreateMovie(this.movie);
-          console.log(this.movie);
-          movieContainer.firstElementChild.appendChild(detailedMovie.render());
-
-
           history.push(event.target.href);
-          console.log(event.target.href);
         })
         button.dataset.clicked = true;
       }

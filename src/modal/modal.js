@@ -33,13 +33,25 @@ class EditMovie {
     })
   }
 
-  render() {
-    document.body.appendChild(this.form);
-    this.onAddFieldClick();
+  onModalFooterClick() {
+    const footer = document.querySelector(".modal-footer");
+    footer.addEventListener("click", (event) => {
+      if (event.target.closest(".closed")) {
+        document.body.removeChild(this.form);
+      } else if (event.target.closest(".closed")) {
+        document.body.removeChild(this.form);
+      }
+    })
   }
 
   hide() {
     document.body.removeChild(this.form);
+  }
+
+  render() {
+    document.body.appendChild(this.form);
+    this.onAddFieldClick();
+    this.onModalFooterClick();
   }
 }
 

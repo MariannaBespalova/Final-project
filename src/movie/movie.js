@@ -4,10 +4,8 @@ import { renderTemplate } from "../template-utils";
 
 class CreateMovie {
   constructor(movie) {
-
     this.details = renderTemplate(html, { ...movie })
   }
-
 
   render() {
     return this.details;

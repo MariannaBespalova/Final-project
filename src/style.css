@@ -39,6 +39,9 @@ main {
 .btn-add-field svg {
   margin-top: -2px;
 }
+.card-img {
+  height: 278px;
+}
 .card-title {
   padding-right: 60px;
 }

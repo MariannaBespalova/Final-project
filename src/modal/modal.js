@@ -1,9 +1,15 @@
 import html from "./modal.html";
+import newField from "./addFields.html";
 import { renderTemplate } from "../template-utils";
+import $ from "jquery";
+import { v4 as uuidv4 } from 'uuid';
+import { getHistory } from "../app-history";
 
 
 
-class EditMovie {
+const history = getHistory();
+
+class Modal {
   constructor(movie) {
     if (movie === null || movie === undefined) {
       this.form = renderTemplate(html);
@@ -12,47 +18,88 @@ class EditMovie {
   }
 
   onAddFieldClick() {
-    const addField = document.querySelector("#add-field");
-    addField.addEventListener("click", (event) => {
+    this.addField = this.form.querySelector("#add-field");
+    this.addField.addEventListener("click", (event) => {
+      event.stopImmediatePropagation();
       if (event.target.closest(".btn-add-field")) {
-        const newField = document.createElement("div");
-        newField.className = "form-group row new-fields";
-        newField.innerHTML = `<div class="col-sm-5">
-                                    <input required type="text" class="form-control" placeholder="Должность" name="newPos">
-                                </div>
-                                <div class="col-sm-5">
-                                    <input required type="text" class="form-control" placeholder="Имя" name="newName">
-                                </div>
-                                <div class="col-sm-2">
-                                    <button class="btn btn-danger btn-sm btn-remove-field" type="button"><svg class="octicon octicon-x" viewBox="0 0 14 18" version="1.1" width="14" height="18" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"></path></svg></button>
-                               </div>`;
-        addField.appendChild(newField);
+        this.newField = document.createElement("div");
+        this.newField.className = "form-group row new-fields";
+        this.newField.innerHTML = newField;
+        this.addField.appendChild(this.newField);
       } else if (event.target.closest(".btn-remove-field")) {
         event.target.closest(".new-fields").remove();
       }
     })
   }
 
-  onModalFooterClick() {
+  editMovie() {
+    
+  }
+
+  saveMovie() {
     const footer = document.querySelector(".modal-footer");
     footer.addEventListener("click", (event) => {
-      if (event.target.closest(".closed")) {
-        document.body.removeChild(this.form);
-      } else if (event.target.closest(".closed")) {
-        document.body.removeChild(this.form);
+      if (event.target.closest(".save")) {
+        event.stopImmediatePropagation();
+        this.id = uuidv4();
+        this.title = this.form.querySelector("#title").value || "";
+        this.origin = this.form.querySelector("#origin_title").value || "";
+        this.year = this.form.querySelector("#year").value;
+        this.country = this.form.querySelector("#country").value;
+        this.tagline = this.form.querySelector("#tagline").value;
+        this.producer = this.form.querySelector("#producer").value;
+        this.actors = this.form.querySelector("#actors").value;//переделать на .split(",")
+        this.rating = this.form.querySelector("#rating").value;
+        this.description = this.form.querySelector("#description").value;
+        this.image = this.form.querySelector("#image");
+        this.additionalPositions = [];
+
+        if (this.form.querySelector("input[name=newPos]") && this.form.querySelector("input[name=newName]")) {
+          this.form.querySelectorAll(".new-fields").forEach(field => {
+            const newPos = field.querySelector("input[name=newPos").value;
+            const newName = field.querySelector("input[name=newName").value;
+            const newMovieCard = {};
+            newMovieCard[newPos] = newName;
+            this.additionalPositions.push(newMovieCard);
+          })
+        }
+        const movieInfo = {
+          id: this.id,
+          title: this.title,
+          origin: this.origin,
+          year: this.year,
+          country: this.country,
+          tagline: this.tagline,
+          producer: this.producer,
+          actors: this.actors,
+          rating: this.rating,
+          description: this.description,
+          image: this.image,
+          additionalPositions: this.additionalPositions
+        }
+
+
+        const movieData = JSON.parse(localStorage.getItem("movies"));
+        movieData.push(movieInfo);
+        localStorage.setItem("movies", JSON.stringify(movieData));
+        history.push({ pathname: "/list", search: "" });
+
+
+        $('#modal').modal('hide');
       }
     })
   }
 
-  hide() {
-    document.body.removeChild(this.form);
-  }
 
   render() {
     document.body.appendChild(this.form);
     this.onAddFieldClick();
-    this.onModalFooterClick();
+    this.saveMovie();
+
+    $("#modal").on("hidden.bs.modal", () => {
+      $("#modal").remove();
+    })
   }
 }
 
-export default EditMovie;
+export default Modal;

@@ -1,9 +1,9 @@
-import html from "./main.html"
+import html from "./main.html";
 
 
-class CreateMain {
+class Main {
   constructor() {
-    this.main
+    this.main;
   }
   render() {
     this.main = html;
@@ -15,4 +15,4 @@ class CreateMain {
   }
 }
 
-export default CreateMain
+export default Main;

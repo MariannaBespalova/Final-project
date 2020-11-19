@@ -1,9 +1,9 @@
-import html from "./footer.html"
+import html from "./footer.html";
 
 
-class CreateFooter {
+class Footer {
   constructor() {
-    this.footer
+    this.footer;
   }
 
   render() {
@@ -16,4 +16,4 @@ class CreateFooter {
   }
 }
 
-export default CreateFooter
+export default Footer;

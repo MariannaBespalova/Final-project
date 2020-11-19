@@ -5,34 +5,40 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./style.css";
 import { getHistory } from "./app-history";
 import movies from "./movies.json";
-
-import CreateHeader from "./header/header";
-import CreateMain from "./main/main";
-import RenderCard from "./film-card/card";
-import CreateFooter from "./footer/footer";
+import Header from "./header/header";
+import Main from "./main/main";
+import Card from "./film-card/card";
+import Footer from "./footer/footer";
 import Greeting from "./greeting/greeting";
+import Movie from "./movie/movie";
 
-import CreateMovie from "./movie/movie";
-
-console.log(movies[0].id);
 const container = document.querySelector(".container");
 
-const header = new CreateHeader();
+const header = new Header();
 container.appendChild(header.render());
 
 
-const main = new CreateMain();
+const main = new Main();
 container.appendChild(main.render());
 
 const mainWrapper = document.querySelector("#content");
 const greeting = new Greeting();
 mainWrapper.appendChild(greeting.render())
 
-const footer = new CreateFooter();
+const footer = new Footer();
 container.appendChild(footer.render());
 
 const history = getHistory();
 
+if (!localStorage.getItem("movies")) {
+  localStorage.setItem("movies", JSON.stringify(movies));
+}
+
+const movieData = JSON.parse(localStorage.getItem("movies"));
+
+let arr = []
+
+movieData.forEach(movie => arr.push(movie.id))
 
 function renderRoute(path) {
   if (path === "/") {
@@ -40,45 +46,29 @@ function renderRoute(path) {
     mainWrapper.appendChild(greeting.render());
   } else if (path === "/list") {
     mainWrapper.innerHTML = "";
-    const movie = movies.map(movie => new RenderCard(movie))
+    const movie = movieData.map(movie => new Card(movie));
     movie.forEach(card => card.render());
-  } else if (path.length > 6) {
+  } else if (path === `/list-${(arr.find(id => id === path.slice(6)))}`) {
     mainWrapper.innerHTML = "";
-    const findMovie = movies.find(movie => movie.id === path.slice(6));
-    const detailedMovie = new CreateMovie(findMovie);
+    const findMovie = movieData.find(movie => movie.id === path.slice(6));
+    const detailedMovie = new Movie(findMovie);
     mainWrapper.appendChild(detailedMovie.render());
+  } else if (path === "/search-") {
+    mainWrapper.innerHTML = "";
+    const searchQuery = document.querySelector("input[name=query]");
+    movieData.forEach(movie => {
+      if ((movie.title.toLowerCase().indexOf(searchQuery.value.toLowerCase()) + 1)) {
+        const findMovie = new Card(movie);
+        findMovie.render();
+
+      };
+    });
   }
 }
+
 
 history.listen(listener => {
   renderRoute(listener.location.pathname);
 });
 
 renderRoute(history.location.pathname);
-
-// if (!localStorage.getItem("movies")) {
-//   localStorage.setItem("movies", JSON.stringify(movies));
-// }
-
-// const newFilmInfo = [];
-// const moviesList = JSON.parse(localStorage.getItem("movies"));
-// moviesList.push(newFilmInfo);
-// localStorage.setItem("movies", JSON.stringify(moviesList));
-
-
-document.querySelector("#search").addEventListener("submit", event => {
-  event.preventDefault();
-  showMoviesPage();
-  console.log("search")
-});
-
-function showMoviesPage() {
-  let searchQuery = document.querySelector("input[name=query]");
-  console.log(searchQuery)
-  movies.forEach(movie => {
-    console.log(!(movie.title.toLowerCase().indexOf(searchQuery.value.toLowerCase()) + 1))
-    if (!(movie.title.toLowerCase().indexOf(searchQuery.value.toLowerCase()) + 1)) {
-      document.getElementById(`${movie.id}`).classList.toggle("hide");
-    };
-  });
-};

@@ -2,7 +2,7 @@ import html from "./movie.html";
 import { renderTemplate } from "../template-utils";
 
 
-class CreateMovie {
+class Movie {
   constructor(movie) {
     this.details = renderTemplate(html, { ...movie })
   }
@@ -12,4 +12,4 @@ class CreateMovie {
   }
 }
 
-export default CreateMovie;
+export default Movie;

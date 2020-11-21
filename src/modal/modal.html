@@ -13,6 +13,7 @@
           <div class="form-group">
             <label>Название фильма:</label>
             <input id="title" type="text" class="form-control">
+            <input id="movieId" type="hidden" class="form-control">
           </div>
           <div class="form-group">
             <label>Оригинальное название фильма:</label>
@@ -23,7 +24,7 @@
               <span class="input-group-text" id="upload-poster-addon">Постер</span>
             </div>
             <div class="custom-file">
-              <input type="file" class="custom-file-input" id="upload-poster" aria-describedby="upload-poster-addon">
+              <input type="url" class="custom-file-input" id="upload-poster" aria-describedby="upload-poster-addon">
               <label class="custom-file-label" for="upload-poster">Выберите файл</label>
             </div>
           </div>
@@ -60,22 +61,7 @@
                   </svg></button>
               </div>
             </div>
-            <!-- <div class="form-group row new-fields">
-              <div class="col-sm-5">
-                <input type="text" class="form-control" placeholder="Должность">
-              </div>
-              <div class="col-sm-5">
-                <input type="text" class="form-control" placeholder="Имя">
-              </div>
-              <div class="col-sm-2">
-                <button class="btn btn-danger btn-sm btn-remove-field" type="button"><svg class="octicon octicon-x"
-                    viewBox="0 0 14 18" version="1.1" width="14" height="18" aria-hidden="true">
-                    <path fill-rule="evenodd"
-                      d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z">
-                    </path>
-                  </svg></button>
-              </div>
-            </div> -->
+
           </fieldset>
           <div class="form-group">
             <label>В ролях:</label>

@@ -4,13 +4,14 @@ import { renderTemplate } from "../template-utils";
 import $ from "jquery";
 import { v4 as uuidv4 } from 'uuid';
 import { getHistory } from "../app-history";
-
+import Card from "../film-card/card"
 
 
 const history = getHistory();
 
 class Modal {
   constructor(movie) {
+
     if (movie === null || movie === undefined) {
       this.form = renderTemplate(html);
     }
@@ -32,61 +33,115 @@ class Modal {
     })
   }
 
+  createEditMovie() {
+    this.title = this.form.querySelector("#title").value;
+    const movieInfo = {
+      title: this.title
+    }
+
+    return movieInfo;
+  }
+
+
+
   editMovie() {
-    
+    const saveBtn = this.form.querySelector(".save");
+    saveBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+
+      this.id = this.form.querySelector("#movieId").value
+      this.title = this.form.querySelector("#title").value;
+      this.origin = this.form.querySelector("#origin_title").value;
+      this.year = this.form.querySelector("#year").value;
+      this.country = this.form.querySelector("#country").value;
+      this.tagline = this.form.querySelector("#tagline").value;
+      this.producer = this.form.querySelector("#producer").value;
+      this.actors = this.form.querySelector("#actors").value;//переделать на .split(",")
+      this.rating = this.form.querySelector("#rating").value;
+      this.description = this.form.querySelector("#description").value;
+      this.image = this.form.querySelector("#upload-poster").value;
+      this.additionalPositions = [];
+      const movieInfo = {
+        id: this.id,
+        title: this.title,
+        origin: this.origin,
+        year: this.year,
+        country: this.country,
+        tagline: this.tagline,
+        producer: this.producer,
+        actors: this.actors,
+        rating: this.rating,
+        description: this.description,
+        image: this.image,
+        additionalPositions: this.additionalPositions
+      }
+
+      const movieData = JSON.parse(localStorage.getItem("movies"));
+      const findMovie = movieData.find(movie => movie.id === this.id);
+      const index = movieData.indexOf(findMovie);
+
+      
+      movieData[index] = movieInfo;
+      
+      localStorage.setItem("movies", JSON.stringify(movieData));
+      $('#modal').modal('hide');
+      history.push({ pathname: "/list", search: "" });
+    })
   }
 
   saveMovie() {
-    const footer = document.querySelector(".modal-footer");
-    footer.addEventListener("click", (event) => {
-      if (event.target.closest(".save")) {
-        event.stopImmediatePropagation();
-        this.id = uuidv4();
-        this.title = this.form.querySelector("#title").value || "";
-        this.origin = this.form.querySelector("#origin_title").value || "";
-        this.year = this.form.querySelector("#year").value;
-        this.country = this.form.querySelector("#country").value;
-        this.tagline = this.form.querySelector("#tagline").value;
-        this.producer = this.form.querySelector("#producer").value;
-        this.actors = this.form.querySelector("#actors").value;//переделать на .split(",")
-        this.rating = this.form.querySelector("#rating").value;
-        this.description = this.form.querySelector("#description").value;
-        this.image = this.form.querySelector("#image");
-        this.additionalPositions = [];
+    const saveBtn = this.form.querySelector(".save");
+    saveBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      this.id = uuidv4();
+      this.title = this.form.querySelector("#title").value;
+      this.origin = this.form.querySelector("#origin_title").value;
+      this.year = this.form.querySelector("#year").value;
+      this.country = this.form.querySelector("#country").value;
+      this.tagline = this.form.querySelector("#tagline").value;
+      this.producer = this.form.querySelector("#producer").value;
+      this.actors = this.form.querySelector("#actors").value;//переделать на .split(",")
+      this.rating = this.form.querySelector("#rating").value;
+      this.description = this.form.querySelector("#description").value;
+      this.image = this.form.querySelector("#upload-poster").value;
+      this.additionalPositions = [];
 
-        if (this.form.querySelector("input[name=newPos]") && this.form.querySelector("input[name=newName]")) {
-          this.form.querySelectorAll(".new-fields").forEach(field => {
-            const newPos = field.querySelector("input[name=newPos").value;
-            const newName = field.querySelector("input[name=newName").value;
-            const newMovieCard = {};
-            newMovieCard[newPos] = newName;
-            this.additionalPositions.push(newMovieCard);
-          })
-        }
-        const movieInfo = {
-          id: this.id,
-          title: this.title,
-          origin: this.origin,
-          year: this.year,
-          country: this.country,
-          tagline: this.tagline,
-          producer: this.producer,
-          actors: this.actors,
-          rating: this.rating,
-          description: this.description,
-          image: this.image,
-          additionalPositions: this.additionalPositions
-        }
-
-
-        const movieData = JSON.parse(localStorage.getItem("movies"));
-        movieData.push(movieInfo);
-        localStorage.setItem("movies", JSON.stringify(movieData));
-        history.push({ pathname: "/list", search: "" });
-
-
-        $('#modal').modal('hide');
+      if (this.form.querySelector("input[name=newPos]") && this.form.querySelector("input[name=newName]")) {
+        this.form.querySelectorAll(".new-fields").forEach(field => {
+          const newPos = field.querySelector("input[name=newPos").value;
+          const newName = field.querySelector("input[name=newName").value;
+          const newMovieCard = {};
+          newMovieCard[newPos] = newName;
+          this.additionalPositions.push(newMovieCard);
+        })
       }
+      const movieInfo = {
+        id: this.id,
+        title: this.title,
+        origin: this.origin,
+        year: this.year,
+        country: this.country,
+        tagline: this.tagline,
+        producer: this.producer,
+        actors: this.actors,
+        rating: this.rating,
+        description: this.description,
+        image: this.image,
+        additionalPositions: this.additionalPositions
+      }
+
+
+      const movieData = JSON.parse(localStorage.getItem("movies"));
+      movieData.push(movieInfo);
+      localStorage.setItem("movies", JSON.stringify(movieData));
+
+
+      history.push({ pathname: "/list", search: "" });
+      $('#modal').modal('hide');
+
     })
   }
 
@@ -94,7 +149,7 @@ class Modal {
   render() {
     document.body.appendChild(this.form);
     this.onAddFieldClick();
-    this.saveMovie();
+    // this.saveMovie();
 
     $("#modal").on("hidden.bs.modal", () => {
       $("#modal").remove();

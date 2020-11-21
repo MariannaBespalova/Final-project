@@ -5,7 +5,7 @@ import { getHistory } from "../app-history";
 import Modal from "../modal/modal";
 
 
-const modal = new Modal();
+
 const movieContainer = document.querySelector(".container");
 
 const history = getHistory();
@@ -19,27 +19,26 @@ class Header {
     if (event.target.tagName === "A") {
       event.preventDefault();
       history.push({ pathname: "/list", search: "" });
-    } else if (event.target.id === "add-new") {
+    }
+    else if (event.target.id === "add-new") {
       event.preventDefault();
-      
+
+      const modal = new Modal();
       modal.render();
+      modal.saveMovie();
+
       $("#modal").modal("show");
+      history.push({ pathname: "/list", search: "" });
+      let movieData = JSON.parse(localStorage.getItem("movies"));
+      console.log(movieData)
     }
   }
 
-  clickSearch() {
-    this.header.querySelector("#search-btn").addEventListener("click", (e) => {
-      e.preventDefault();
-      const searchQuery = this.header.querySelector("input[name=query]");
-      history.push({ pathname: "search-", search: `?query=${searchQuery.value}` });
-    })
-  }
-
-  // addFilm() {
-  //   document.querySelector(".save").addEventListener("click", event => {
+  // onAddMovieClick() {
+  //   const modal = new Modal((event) => {
   //     event.preventDefault();
-  //     event.stopPropagation();
-  //     const id = new Date();
+  //     event.stopImmediatePropagation();
+  //     const id = uuidv4();
   //     const title = this.header.querySelector("#title").value;
   //     const origin = document.querySelector("#origin_title").value;
   //     const year = document.querySelector("#year").value;
@@ -52,7 +51,6 @@ class Header {
   //     const image = document.querySelector("#image");
   //     const additionalPositions = [];
 
-
   //     if (document.querySelector("input[name=newPos]") && document.querySelector("input[name=newName]")) {
   //       document.querySelectorAll(".new-fields").forEach(e => {
   //         const newPos = e.querySelector("input[name=newPos").value;
@@ -62,7 +60,6 @@ class Header {
   //         additionalPositions.push(newMovieCard);
   //       });
   //     };
-
   //     const movieInfo = {
   //       "id": id,
   //       "title": title,
@@ -83,14 +80,24 @@ class Header {
   //     movieData.push(movieInfo);
   //     console.log(movieData);
   //     localStorage.setItem("movies", JSON.stringify(movieData));
-  //     const newMovie = new Card(movieInfo);
+  //     history.push({ pathname: "/list", search: "" });
 
-  //     newMovie.render();
-
-
+  //     // $('#modal').modal('hide');
   //   })
+  //   modal.render();
+
+  //   $("#modal").modal("show");
   // }
 
+  clickSearch() {
+    this.header.querySelector("#search-btn").addEventListener("click", (e) => {
+      e.preventDefault();
+      const searchQuery = this.header.querySelector("input[name=query]");
+      history.push({ pathname: "search-", search: `?query=${searchQuery.value}` });
+    })
+  }
+
+  
   render() {
     this.header.addEventListener("click", this.onClick.bind(this));
 

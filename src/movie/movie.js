@@ -4,7 +4,8 @@ import { renderTemplate } from "../template-utils";
 
 class Movie {
   constructor(movie) {
-    this.details = renderTemplate(html, { ...movie })
+    this.details = renderTemplate(html, movie);
+
   }
 
   render() {

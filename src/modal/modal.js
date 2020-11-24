@@ -4,8 +4,6 @@ import { renderTemplate } from "../template-utils";
 import $ from "jquery";
 import { v4 as uuidv4 } from 'uuid';
 import { getHistory } from "../app-history";
-import Card from "../film-card/card"
-
 
 const history = getHistory();
 
@@ -33,23 +31,11 @@ class Modal {
     })
   }
 
-  createEditMovie() {
-    this.title = this.form.querySelector("#title").value;
-    const movieInfo = {
-      title: this.title
-    }
-
-    return movieInfo;
-  }
-
-
-
   editMovie() {
     const saveBtn = this.form.querySelector(".save");
     saveBtn.addEventListener("click", (event) => {
       event.preventDefault();
       event.stopImmediatePropagation();
-
 
       this.id = this.form.querySelector("#movieId").value
       this.title = this.form.querySelector("#title").value;
@@ -58,11 +44,23 @@ class Modal {
       this.country = this.form.querySelector("#country").value;
       this.tagline = this.form.querySelector("#tagline").value;
       this.producer = this.form.querySelector("#producer").value;
-      this.actors = this.form.querySelector("#actors").value;//переделать на .split(",")
+      this.actors = this.form.querySelector("#actors").value.split(",");
       this.rating = this.form.querySelector("#rating").value;
       this.description = this.form.querySelector("#description").value;
-      this.image = this.form.querySelector("#upload-poster").value;
+      this.image = this.form.querySelector("#image").value;
       this.additionalPositions = [];
+
+
+      if (this.form.querySelector("input[name=newPos]") && this.form.querySelector("input[name=newName]")) {
+        this.form.querySelectorAll(".new-fields").forEach(field => {
+          const newPos = field.querySelector("input[name=newPos").value;
+          const newName = field.querySelector("input[name=newName").value;
+          const newMovieCard = {};
+          newMovieCard[newPos] = newName;
+          this.additionalPositions.push(newMovieCard);
+        })
+      }
+
       const movieInfo = {
         id: this.id,
         title: this.title,
@@ -82,12 +80,13 @@ class Modal {
       const findMovie = movieData.find(movie => movie.id === this.id);
       const index = movieData.indexOf(findMovie);
 
-      
       movieData[index] = movieInfo;
-      
+
       localStorage.setItem("movies", JSON.stringify(movieData));
+
+      this.editMovieCardInfo(this.id);
+
       $('#modal').modal('hide');
-      history.push({ pathname: "/list", search: "" });
     })
   }
 
@@ -103,11 +102,13 @@ class Modal {
       this.country = this.form.querySelector("#country").value;
       this.tagline = this.form.querySelector("#tagline").value;
       this.producer = this.form.querySelector("#producer").value;
-      this.actors = this.form.querySelector("#actors").value;//переделать на .split(",")
+      this.actors = this.form.querySelector("#actors").value.split(", ");
       this.rating = this.form.querySelector("#rating").value;
       this.description = this.form.querySelector("#description").value;
-      this.image = this.form.querySelector("#upload-poster").value;
+      this.image = this.form.querySelector("#image").value;
       this.additionalPositions = [];
+      this.like = 0;
+      this.dislike = 0;
 
       if (this.form.querySelector("input[name=newPos]") && this.form.querySelector("input[name=newName]")) {
         this.form.querySelectorAll(".new-fields").forEach(field => {
@@ -130,26 +131,36 @@ class Modal {
         rating: this.rating,
         description: this.description,
         image: this.image,
-        additionalPositions: this.additionalPositions
+        additionalPositions: this.additionalPositions,
+        like: this.like,
+        dislike: this.dislike
       }
-
 
       const movieData = JSON.parse(localStorage.getItem("movies"));
       movieData.push(movieInfo);
       localStorage.setItem("movies", JSON.stringify(movieData));
 
 
-      history.push({ pathname: "/list", search: "" });
       $('#modal').modal('hide');
 
+      history.push({ pathname: "/list", search: "" });
     })
   }
 
+  editMovieCardInfo(id) {
+
+    const movieData = JSON.parse(localStorage.getItem("movies"));
+    const findMovie = movieData.find(movie => movie.id === id);
+
+    document.querySelector(`div[data-id=m${id}] .card-title`).innerHTML = findMovie.title;
+    document.querySelector(`div[data-id=m${id}] .card-img`).innerHTML = findMovie.image;
+    document.querySelector(`div[data-id=m${id}] p[data-id=description]`).innerHTML = findMovie.description;
+    document.querySelector(`div[data-id=m${id}] p[data-id=rating]`).innerHTML = findMovie.rating;
+  }
 
   render() {
     document.body.appendChild(this.form);
     this.onAddFieldClick();
-    // this.saveMovie();
 
     $("#modal").on("hidden.bs.modal", () => {
       $("#modal").remove();

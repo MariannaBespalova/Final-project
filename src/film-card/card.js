@@ -1,16 +1,15 @@
 import "jquery";
 import $ from "jquery";
 import html from "./card.html";
+import newFields from "../modal/addFields.html";
 import { renderTemplate } from "../template-utils";
 import { getHistory } from "../app-history";
 import Modal from "../modal/modal";
-
 
 const history = getHistory();
 
 class Card {
   constructor(movie) {
-
     this.id = movie.id || "";
     this.image = movie.image || "";
     this.title = movie.title || "";
@@ -23,24 +22,18 @@ class Card {
     this.producer = movie.producer || "";
     this.actors = movie.actors || "";
     this.card = renderTemplate(html, movie)
-
   }
 
   onEditClick() {
     const editButton = this.card.querySelector(".btn-edit");
     editButton.addEventListener('click', () => {
       const edit = new Modal(this.card);
-  
-      const movieData = JSON.parse(localStorage.getItem("movies"));
-      // const findMovie = movieData.find(movie => movie.id === this.id);
-      // const index = movieData.indexOf(findMovie);
-      
       edit.render();
 
       document.querySelector("#movieId").value = this.id;
       document.querySelector("#title").value = this.title;
       document.querySelector("#origin_title").value = this.origin;
-      document.querySelector("#upload-poster").value = this.image;
+      document.querySelector("#image").value = this.image;
       document.querySelector("#year").value = this.year;
       document.querySelector("#country").value = this.country;
       document.querySelector("#tagline").value = this.tagline;
@@ -48,37 +41,38 @@ class Card {
       document.querySelector("#actors").value = this.actors;
       document.querySelector("#rating").value = this.rating;
       document.querySelector("#description").value = this.description;
+
+      const movieData = JSON.parse(localStorage.getItem("movies"));
+      const findMovie = movieData.find(movie => movie.id === this.id);
+
+      if (findMovie.additionalPositions.length) {
+        for (let i = 0; i < findMovie.additionalPositions.length; i++) {
+          const addField = document.createElement("div");
+          addField.className = "form-group row new-fields";
+          addField.innerHTML = newFields;
+          document.querySelector("#add-field").appendChild(addField);
+        };
+      };
+
+      if (document.querySelector("input[name=newPos]") && document.querySelector("input[name=newName]")) {
+        const newPos = findMovie.additionalPositions;
+
+        let keys = [];
+        let value = [];
+        newPos.forEach(pos => {
+          keys.push(Object.keys(pos))
+          value.push(Object.values(pos))
+        });
+        keys = keys.join().split(",");
+        value = value.join().split(",");
+        document.querySelectorAll('.new-fields').forEach((field, i) => {
+          field.querySelector("input[name=newPos]").value = keys[i];
+          field.querySelector("input[name=newName]").value = value[i];
+        });
+      };
+
       $("#modal").modal("show");
-      edit.createEditMovie();
-      console.log(edit.createEditMovie())
-      //   if (findMovie.additionalPositions.length) {
-      //     for (let i = 0; i < obj.additionalPositions.length; i++) {
-      //         let addField = document.createElement("div");
-      //         addField.className = "form-group row addNewFields";
-      //         addField.innerHTML = `<div class="col-sm-5">
-      //                                 <input required type="text" class="form-control" placeholder="Должность" name="newPos">
-      //                             </div>
-      //                             <div class="col-sm-5">
-      //                                 <input required type="text" class="form-control" placeholder="Имя" name="newName">
-      //                             </div>
-      //                             <div class="col-sm-2">
-      //                                 <button class="btn btn-danger btn-sm btn-remove-field" type="button"><svg class="octicon octicon-x" viewBox="0 0 14 18" version="1.1" width="14" height="18" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48L7.48 8z"></path></svg></button>
-      //                             </div>`;
-      //         document.querySelector("#addField").appendChild(addField);
-      //     };
-      // };
-
-
-
-      const title = document.querySelector("#title").value;
-      const origin = document.querySelector("#origin_title").value;
-
-      console.log(title, origin)
       edit.editMovie();
-
-
-
-
     })
   }
 
@@ -90,13 +84,10 @@ class Card {
       if (confirmDelete === true) {
         this.card.remove();
         let movieData = JSON.parse(localStorage.getItem("movies"));
-        const newMov = movieData.filter(movie => movie.id !== this.id);
-        console.log(newMov)
+        const newMovies = movieData.filter(movie => movie.id !== this.id);
 
-        localStorage.setItem("movies", JSON.stringify(newMov));
+        localStorage.setItem("movies", JSON.stringify(newMovies));
       }
-
-
     })
   }
 
@@ -109,7 +100,6 @@ class Card {
     })
   }
 
-
   render() {
     const main = document.querySelector("main");
     main.appendChild(this.card);
@@ -117,7 +107,6 @@ class Card {
     this.onEditClick();
     this.onDeleteClick();
     this.onMoreInfoClick();
-
   }
 }
 

@@ -49,6 +49,9 @@ class Modal {
       this.description = this.form.querySelector("#description").value;
       this.image = this.form.querySelector("#image").value;
       this.additionalPositions = [];
+      this.like = 0;
+      this.dislike = 0;
+
 
 
       if (this.form.querySelector("input[name=newPos]") && this.form.querySelector("input[name=newName]")) {
@@ -73,7 +76,9 @@ class Modal {
         rating: this.rating,
         description: this.description,
         image: this.image,
-        additionalPositions: this.additionalPositions
+        additionalPositions: this.additionalPositions,
+        like: this.like,
+        dislike: this.dislike
       }
 
       const movieData = JSON.parse(localStorage.getItem("movies"));

@@ -55,7 +55,7 @@ function renderRoute(path) {
     mainWrapper.innerHTML = "";
     const searchQuery = document.querySelector("input[name=query]");
     movieData.forEach(movie => {
-      if ((movie.title.toLowerCase().indexOf(searchQuery.value.toLowerCase()) + 1)) {
+      if (movie.title.toLowerCase().includes(searchQuery.value.toLowerCase())) {
         const findMovie = new Card(movie);
         findMovie.render();
         movieExists = true;

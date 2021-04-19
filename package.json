@@ -2,22 +2,25 @@
   "name": "final-project",
   "version": "1.0.0",
   "description": "Hillel final project",
+  "private": true,
+  "homepage": "https://mariannabespalova.github.io/Final-project/",
   "main": "index.js",
   "scripts": {
     "start": "webpack serve",
     "build": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "deploy": "gh-pages -d dist",
+    "predeploy": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/MariannaBespalova/Final-project.git"
+    "url": "https://mariannabespalova.github.io/Final-project/"
   },
   "author": "Marianna Bespalova <mariannabespalova9@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MariannaBespalova/Final-project/issues"
+    "url": "https://mariannabespalova.github.io/Final-project/"
   },
-  "homepage": "https://github.com/MariannaBespalova/Final-project#readme",
   "devDependencies": {
     "@babel/core": "^7.12.8",
     "@babel/plugin-proposal-class-properties": "^7.12.1",
@@ -38,6 +41,7 @@
   },
   "dependencies": {
     "bootstrap": "^4.5.3",
+    "gh-pages": "^3.1.0",
     "history": "^5.0.0",
     "jquery": "^3.5.1",
     "lodash.template": "^4.5.0",

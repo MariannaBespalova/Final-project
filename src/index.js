@@ -71,7 +71,8 @@ function renderRoute(path) {
       mainWrapper.appendChild(p);
     }
   } else {
-    mainWrapper.innerHTML = "404";
+    mainWrapper.innerHTML = "";
+    mainWrapper.appendChild(greeting.render());
   };
 }
 
